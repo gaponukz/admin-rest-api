@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.1.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "crypto": "^1.0.1",
+    "crypto-ts": "^1.0.2",
+    "mongoose": "^7.1.0"
+  }
+}
