@@ -1,4 +1,5 @@
 import mongoose, { Model, Document } from 'mongoose'
+import { injectable } from "inversify"
 import { User, Post, Message } from './interfaces'
 import { UserSchema, PostSchema, MessageSchema } from './schemas'
 import { UserEntity, PostEntity, MessageEntity } from './enteties'
@@ -16,6 +17,7 @@ interface IRepository<Entity> {
     delete(user: Entity): void
 }
 
+@injectable()
 class UserRepository implements IRepository<UserEntity> {
     private mongoUser: Model<UserDocument>
 
@@ -47,6 +49,7 @@ class UserRepository implements IRepository<UserEntity> {
     }
 }
 
+@injectable()
 class PostRepository implements IRepository<PostEntity> {
     private mongoPost: Model<PostDocument>
 
@@ -78,6 +81,7 @@ class PostRepository implements IRepository<PostEntity> {
     }
 }
 
+@injectable()
 class MessageRepository implements IRepository<MessageEntity> {
     private mongoMessage: Model<MessageDocument>
 
@@ -127,6 +131,7 @@ class SendTelegramMessageRepositoryDecorator extends MessageRepository {
 }
 
 export {
+    IRepository,
     UserRepository,
     PostRepository,
     MessageRepository,

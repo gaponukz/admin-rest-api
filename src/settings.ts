@@ -1,19 +1,21 @@
+import { injectable } from "inversify"
 import * as dotenv from "dotenv"
 
 interface ISettings {
-    port: number
-    databaseUri: string
-    adminApiKey: string
-    ownerTelegramId: number
-    telegramBotToken: string
+    readonly port: number
+    readonly databaseUri: string
+    readonly adminApiKey: string
+    readonly ownerTelegramId: number
+    readonly telegramBotToken: string
 }
 
-export default class DotEnvSettings implements ISettings {
-    port: number
-    databaseUri: string
-    adminApiKey: string
-    ownerTelegramId: number
-    telegramBotToken: string
+@injectable()
+class DotEnvSettings implements ISettings {
+    readonly port: number
+    readonly databaseUri: string
+    readonly adminApiKey: string
+    readonly ownerTelegramId: number
+    readonly telegramBotToken: string
 
     constructor () {
         dotenv.config()
@@ -25,3 +27,5 @@ export default class DotEnvSettings implements ISettings {
         this.telegramBotToken = process.env.telegramBotToken
     }
 }
+
+export { ISettings, DotEnvSettings }
