@@ -3,6 +3,7 @@ import { ISettings } from "./source/settings"
 import { container } from './source/dependencies'
 import mongoose from 'mongoose'
 
+import checkAdminAuthentication from './source/adminAuthorization'
 import { getAllUsers } from './source/logic/service'
 
 const settings = container.get<ISettings>("ISettings")
@@ -19,7 +20,18 @@ app.use((request: Request, response: Response, next) => {
 })
 
 app.get('/', async (request: Request, response: Response) => {
-    response.json(await getAllUsers()) // test
+    response.json({isWork: true}) // test
+})
+
+app.get('/get_all', async (request: Request, response: Response) => {
+    if (checkAdminAuthentication(request)) {
+        console.log(request.headers.authorization)
+        response.json(await getAllUsers())
+
+    } else {
+        response.status(401)
+        response.json([])
+    }
 })
 
 app.listen(port, () => {
