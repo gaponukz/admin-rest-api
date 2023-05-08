@@ -1,2 +1,7 @@
 node_modules
 package-lock.json
+*.js
+*.js.map
+.vscode
+tsconfig.json
+.env

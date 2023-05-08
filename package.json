@@ -8,6 +8,7 @@
     "@types/mongoose": "^5.11.97",
     "crypto": "^1.0.1",
     "crypto-ts": "^1.0.2",
+    "dotenv": "^16.0.3",
     "mongoose": "^7.1.0"
   }
 }
