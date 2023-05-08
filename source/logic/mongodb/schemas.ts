@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose'
-import { getUTCDate } from '../utils'
+import { UserDocument, PostDocument, MessageDocument } from './documents'
+import { getUTCDate } from '../../utils'
 
-const UserSchema: Schema = new Schema({
-    id: {type: Number, default: 0},
+const UserSchema = new Schema<UserDocument>({
     username: {type: String, required: true},
     key: {type: String, required: true},
     hasTrial: {type: Boolean, default: true},
@@ -13,13 +13,13 @@ const UserSchema: Schema = new Schema({
     uuid: {type: String, default: undefined}
 })
 
-const PostSchema: Schema = new Schema({
+const PostSchema = new Schema<PostDocument>({
     title: {type: String, required: true},
     description: {type: String, required: true},
     image: {type: String, required: true}
 })
 
-const MessageSchema = new Schema({
+const MessageSchema = new Schema<MessageDocument>({
     subject: {type: String, required: true},
     gmail: {type: String, required: true},
     message: {type: String, required: true},

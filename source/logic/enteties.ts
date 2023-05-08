@@ -1,7 +1,6 @@
-import {User, Post, Message} from './interfaces'
 import { getUTCDate } from '../utils'
 
-class UserEntity implements User {
+class UserEntity {
     username: string
     key: string
     startPeriodDate: Date
@@ -46,7 +45,7 @@ class UserEntity implements User {
     }
 }
 
-class PostEntity implements Post {
+class PostEntity {
     title: string
     description: string
     image: string
@@ -70,7 +69,7 @@ class PostEntity implements Post {
     }
 }
 
-class MessageEntity implements Message {
+class MessageEntity {
     subject: string
     gmail: string
     message: string

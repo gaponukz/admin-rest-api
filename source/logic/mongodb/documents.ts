@@ -1,4 +1,6 @@
-interface User {
+import { Document } from 'mongoose'
+
+interface UserDocument extends Document {
     username: string
     key: string
     startPeriodDate: Date
@@ -9,13 +11,13 @@ interface User {
     uuid: string | undefined
 }
 
-interface Post {
+interface PostDocument extends Document {
     title: string
     description: string
     image: string
 }
 
-interface Message {
+interface MessageDocument extends Document {
     subject: string
     gmail: string
     message: string
@@ -23,4 +25,4 @@ interface Message {
 }
 
 
-export {User, Post, Message}
+export { UserDocument, PostDocument, MessageDocument }

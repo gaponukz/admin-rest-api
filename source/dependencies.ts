@@ -1,5 +1,5 @@
+import "reflect-metadata"
 import { Container } from "inversify"
-import { UserEntity, PostEntity, MessageEntity } from './logic/enteties'
 import { ISettings, DotEnvSettings } from "./settings"
 import {
     IRepository,
@@ -7,6 +7,7 @@ import {
     PostRepository,
     MessageRepository
 } from './logic/repositories'
+import { UserEntity, PostEntity, MessageEntity } from './logic/enteties'
 
 const container = new Container()
 

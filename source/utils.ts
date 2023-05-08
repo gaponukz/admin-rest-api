@@ -1,4 +1,4 @@
-import { Message } from './logic/interfaces'
+import { MessageEntity } from './logic/enteties'
 import { AES } from 'crypto-ts'
 
 const generateUserKey = (username: string): string => {
@@ -14,7 +14,7 @@ const afterHours = (hours: number): Date => {
     return getUTCDate(new Date().getTime() + hours * 3600000)
 }
 
-const sendTelegramMessage = async (message: Message, callback: (a: any) => Promise<void>): Promise<void> => {
+const sendTelegramMessage = async (message: MessageEntity, callback: (a: any) => Promise<void>): Promise<void> => {
     const telegramApiUrl = "https://api.telegram.org/bot"
     const apiAction = "sendMessage"
     const text = `${message.message} \n${message.subject} \n${message.gmail}`

@@ -1,13 +1,10 @@
-import mongoose, { Model, Document } from 'mongoose'
+import "reflect-metadata"
 import { injectable } from "inversify"
-import { User, Post, Message } from './interfaces'
-import { UserSchema, PostSchema, MessageSchema } from './schemas'
+import mongoose, { Model } from 'mongoose'
+import { UserDocument, PostDocument, MessageDocument } from './mongodb/documents'
+import { UserSchema, PostSchema, MessageSchema } from './mongodb/schemas'
 import { UserEntity, PostEntity, MessageEntity } from './enteties'
 import { sendTelegramMessage } from '../utils'
-
-interface UserDocument extends Document, User {}
-interface PostDocument extends Document, Post {}
-interface MessageDocument extends Document, Message {}
 
 interface IRepository<Entity> {
     getBy(key: string, fields: any): Promise<Entity>
