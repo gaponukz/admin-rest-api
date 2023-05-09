@@ -17,13 +17,10 @@ app.use((request: Request, response: Response, next) => {
     next()
 })
 
-app.get('/', async (request: Request, response: Response) => {
-    response.json({isWork: true}) // test
-})
-
 app.get('/get_all', userRoutes.getAllUsersRoute)
-
 app.get('/get_user', userRoutes.registerClientActionRoute)
+app.get('/edit_user', userRoutes.editUserDataRoute)
+app.get('/remove_user', userRoutes.removeUserRoute)
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`)

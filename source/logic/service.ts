@@ -6,7 +6,7 @@ import { UserEntity, PostEntity, MessageEntity } from './enteties'
 
 const userDB = container.get<IRepository<UserEntity>>("IRepository<UserEntity>")
 
-async function getAllUsers(): Promise<UserEntity[]> {
+export async function getAllUsers(): Promise<UserEntity[]> {
     return await userDB.getAll()
 }
 
@@ -18,7 +18,7 @@ async function getSameUuidUsers(uuid: string): Promise<UserEntity[]> {
     return (await userDB.getAll()).filter(user => uuid && user.uuid == uuid)
 }
 
-async function registerClientAction(request: Request): Promise<UserEntity> {
+export async function registerClientAction(request: Request): Promise<UserEntity> {
     const user = await getUserFromRequest(request)
 
     if (user.isKeyActive) {
@@ -44,9 +44,20 @@ async function registerClientAction(request: Request): Promise<UserEntity> {
     return user
 }
 
-async function createUser(user: UserEntity): Promise<UserEntity> {
+export async function createUser(user: UserEntity): Promise<UserEntity> {
     user.key = generateUserKey(user.username || '')
     return await userDB.create(user)
 }
 
-export { getAllUsers, registerClientAction, createUser }
+export async function editUserData(request: Request): Promise<UserEntity> {
+    const user = await userDB.getBy({ key: request.query.key })
+
+    delete request.query.key
+    delete request.query.adminApiKey
+
+    return await userDB.update(user, request.query)
+}
+
+export async function deleteUser(request: Request): Promise<void> {
+    await userDB.delete(await userDB.getBy( { key: request.query.key } ))
+}

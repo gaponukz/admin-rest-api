@@ -11,7 +11,7 @@ interface IRepository<Entity> {
     getAll(): Promise<Entity[]>
     create(user: Entity): Promise<Entity>
     update(user: Entity, fields: any): Promise<Entity>
-    delete(user: Entity): void
+    delete(user: Entity): Promise<void>
 }
 
 @injectable()
