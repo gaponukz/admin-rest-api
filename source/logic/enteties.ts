@@ -1,5 +1,3 @@
-import { getUTCDate } from '../utils'
-
 class UserEntity {
     _id: number | undefined
     username: string
@@ -15,12 +13,12 @@ class UserEntity {
         _id: number | undefined = undefined,
         username: string,
         key: string,
+        startPeriodDate: Date,
+        endPeriodDate: Date,
         isKeyActive: boolean,
         hasTrial: boolean,
         impersonates: string | undefined = undefined,
         uuid: string | undefined = undefined,
-        startPeriodDate: Date | undefined = undefined,
-        endPeriodDate: Date | undefined = undefined,
     ) {
         this._id = _id
         this.username = username
@@ -29,9 +27,8 @@ class UserEntity {
         this.hasTrial = hasTrial
         this.impersonates = impersonates
         this.uuid = uuid
-
-        this.startPeriodDate = startPeriodDate || getUTCDate()
-        this.endPeriodDate = endPeriodDate || getUTCDate()
+        this.startPeriodDate = startPeriodDate
+        this.endPeriodDate = endPeriodDate
     }
 
     static fromObject(userObject: any): UserEntity {
@@ -39,12 +36,12 @@ class UserEntity {
             userObject._id,
             userObject.username,
             userObject.key,
-            userObject.isKeyActive,
-            userObject.hasTrial,
+            userObject.start_preiod_date || userObject.startPeriodDate,
+            userObject.end_preiod_date || userObject.endPeriodDate,
+            userObject.is_key_active ?? userObject.isKeyActive,
+            userObject.has_trial ?? userObject.hasTrial,
             userObject.impersonates,
-            userObject.uuid,
-            userObject.startPeriodDate,
-            userObject.endPeriodDate
+            userObject.uuid
         )
     }
 }

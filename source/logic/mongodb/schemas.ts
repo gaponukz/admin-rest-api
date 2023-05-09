@@ -2,12 +2,12 @@ import { Schema } from 'mongoose'
 import { UserDocument, PostDocument, MessageDocument } from './documents'
 import { getUTCDate } from '../../utils'
 
-const UserSchema = new Schema<UserDocument>({
+const UserSchema = new Schema({
     username: {type: String, required: true},
     key: {type: String, required: true},
     hasTrial: {type: Boolean, default: true},
-    startPeriodDate: {type: Date, default: getUTCDate()},
-    endPeriodDate: {type: Date, required: true},
+    start_period_date: {type: Date, required: true},
+    end_period_date: {type: Date, required: true},
     isKeyActive: {type: Boolean, default: false},
     impersonates: {type: String, default: undefined},
     uuid: {type: String, default: undefined}

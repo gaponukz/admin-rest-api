@@ -42,7 +42,7 @@ class UserRepository implements IRepository<UserEntity> {
     }
 
     async getAll(): Promise<UserEntity[]> {
-        return (await this.mongoUser.find()).map(user => UserEntity.fromObject(user))
+        return (await this.mongoUser.find()).map(user => UserEntity.fromObject(user.toObject()))
     }
 }
 
