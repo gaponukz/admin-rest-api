@@ -3,8 +3,6 @@ import { createHash } from 'crypto'
 import { ISettings } from "./settings"
 import { container } from './dependencies'
 
-const settings = container.get<ISettings>("ISettings")
-
 const generateUserKey = (username: string): string => {
     return createHash('sha384')
         .update(username + new Date(), 'utf-8')
@@ -24,7 +22,8 @@ const sendTelegramMessage = async (message: MessageEntity, callback: (a: any) =>
     const telegramApiUrl = "https://api.telegram.org/bot"
     const apiAction = "sendMessage"
     const text = `${message.message} \n${message.subject} \n${message.gmail}`
-            
+    const settings = container.get<ISettings>("ISettings")
+       
     await fetch(`${telegramApiUrl}${settings.telegramBotToken}/${apiAction}?chat_id=${settings.ownerTelegramId}}&text=${text}`)
     .then(async apiReponse => await apiReponse.json()).then(async apiReponse => {
         await callback(apiReponse)

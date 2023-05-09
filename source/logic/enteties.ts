@@ -12,11 +12,11 @@ class UserEntity {
     uuid: string | undefined
 
     constructor (
+        _id: number | undefined = undefined,
         username: string,
         key: string,
         isKeyActive: boolean,
         hasTrial: boolean,
-        _id: number | undefined = undefined,
         impersonates: string | undefined = undefined,
         uuid: string | undefined = undefined,
         startPeriodDate: Date | undefined = undefined,
@@ -56,10 +56,10 @@ class PostEntity {
     image: string
 
     constructor (
+        _id: number | undefined = undefined,
         title: string,
         description: string,
         image: string,
-        _id: number | undefined = undefined,
     ) {
         this._id = _id
         this.title = title
@@ -85,11 +85,11 @@ class MessageEntity {
     date: Date
 
     constructor (
+        _id: number | undefined = undefined,
         subject: string,
         gmail: string,
         message: string,
-        date: Date,
-        _id: number | undefined = undefined,
+        date: Date
     ) {
         this._id = _id
         this.subject = subject
