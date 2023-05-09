@@ -1,10 +1,8 @@
+import mongoose from 'mongoose'
 import express, { Express, Request, Response } from 'express'
 import { ISettings } from "./source/settings"
 import { container } from './source/dependencies'
-import mongoose from 'mongoose'
-
-import checkAdminAuthentication from './source/adminAuthorization'
-import { getAllUsers, registerClientAction } from './source/logic/service'
+import * as userRoutes from './source/poutes/users'
 
 const settings = container.get<ISettings>("ISettings")
 const app: Express = express()
@@ -23,20 +21,9 @@ app.get('/', async (request: Request, response: Response) => {
     response.json({isWork: true}) // test
 })
 
-app.get('/get_all', async (request: Request, response: Response) => {
-    if (checkAdminAuthentication(request)) {
-        console.log(request.headers.authorization)
-        response.json(await getAllUsers())
+app.get('/get_all', userRoutes.getAllUsersRoute)
 
-    } else {
-        response.status(401)
-        response.json([])
-    }
-})
-
-app.get('/get_user', async (request: Request, response: Response) => {
-    response.json(await registerClientAction(request))
-})
+app.get('/get_user', userRoutes.registerClientActionRoute)
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
