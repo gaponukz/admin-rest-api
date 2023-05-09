@@ -4,6 +4,7 @@ import { ISettings } from "./source/settings"
 import { container } from './source/dependencies'
 import * as userRoutes from './source/poutes/users'
 import * as postRoutes from './source/poutes/posts'
+import * as messageRoutes from './source/poutes/messages'
 
 const settings = container.get<ISettings>("ISettings")
 const app: Express = express()
@@ -26,6 +27,10 @@ app.get('/remove_user', userRoutes.removeUserRoute)
 app.get('/get_posts', postRoutes.getAllPostsRoute)
 app.get('/add_post', postRoutes.addPostRoute)
 app.get('/remove_post', postRoutes.addPostRoute)
+
+app.get('/send_message', messageRoutes.sendMessageRoute)
+app.get('/get_messages', messageRoutes.getAllMessagesRoute)
+app.get('/remove_message', messageRoutes.deleteMessageRoute)
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`)

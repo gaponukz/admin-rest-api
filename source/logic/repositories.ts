@@ -110,11 +110,10 @@ class MessageRepository implements IRepository<MessageEntity> {
     }
 }
 
-class SendTelegramMessageRepositoryDecorator extends MessageRepository {
-    private messageRepository: MessageRepository
+class SendTelegramMessageDecorator implements IRepository<MessageEntity>  {
+    private messageRepository: IRepository<MessageEntity> 
 
-    constructor(messageRepository: MessageRepository) {
-        super()
+    constructor(messageRepository: IRepository<MessageEntity> ) {
         this.messageRepository = messageRepository
     }
 
@@ -125,6 +124,22 @@ class SendTelegramMessageRepositoryDecorator extends MessageRepository {
 
         return message
     }
+
+    async update(message: MessageEntity, fields: any): Promise<MessageEntity> {
+        return this.messageRepository.update(message, fields)
+    }
+
+    async delete(message: MessageEntity) {
+        this.messageRepository.delete(message)
+    }
+
+    async getBy(fields: any): Promise<MessageEntity> {
+        return this.messageRepository.getBy(fields)
+    }
+
+    async getAll(): Promise<MessageEntity[]> {
+        return this.messageRepository.getAll()
+    }
 }
 
 export {
@@ -132,5 +147,5 @@ export {
     UserRepository,
     PostRepository,
     MessageRepository,
-    SendTelegramMessageRepositoryDecorator
+    SendTelegramMessageDecorator
 }

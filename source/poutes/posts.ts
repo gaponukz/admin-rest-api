@@ -3,13 +3,7 @@ import checkAdminAuthentication from '../adminAuthorization'
 import { getAllPosts, addPost, deletePost } from '../logic/service'
 
 export async function getAllPostsRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
-        response.json(await getAllPosts())
-
-    } else {
-        response.status(401)
-        response.json([])
-    }
+    response.json(await getAllPosts())
 }
 
 export async function addPostRoute (request: Request, response: Response) {

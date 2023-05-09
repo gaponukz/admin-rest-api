@@ -1,11 +1,14 @@
 import { Request } from 'express'
 import { container } from '../dependencies'
-import { IRepository } from './repositories'
+import { IRepository, SendTelegramMessageDecorator } from './repositories'
 import { generateUserKey, getUTCDate, afterHours } from '../utils'
 import { UserEntity, PostEntity, MessageEntity } from './enteties'
 
 const userDB = container.get<IRepository<UserEntity>>("IRepository<UserEntity>")
 const postsDB = container.get<IRepository<PostEntity>>("IRepository<PostEntity>")
+const messagesDB = new SendTelegramMessageDecorator(
+    container.get<IRepository<MessageEntity>>("IRepository<MessageEntity>")
+)
 
 export async function getAllUsers(): Promise<UserEntity[]> {
     return await userDB.getAll()
@@ -75,4 +78,17 @@ export async function addPost(request: Request): Promise<PostEntity> {
 
 export async function deletePost(request: Request): Promise<void> {
     await postsDB.delete(await postsDB.getBy( { _id: request.query.id } ))
+}
+
+export async function addMessage(request: Request): Promise<MessageEntity> {
+    const message = MessageEntity.fromObject(request)
+    return await messagesDB.create(message)
+}
+
+export async function getAllMessages(): Promise<MessageEntity[]> {
+    return await messagesDB.getAll()
+}
+
+export async function deleteMessage(request: Request): Promise<void> {
+    await messagesDB.delete(await messagesDB.getBy( { _id: request.query.id } ))
 }
