@@ -1,8 +1,10 @@
 import { MessageEntity } from './logic/enteties'
-import { AES } from 'crypto-ts'
+import { createHash } from 'crypto'
 
 const generateUserKey = (username: string): string => {
-    return AES.encrypt(username + new Date(), 'secret').toString();
+    return createHash('sha384')
+        .update(username + new Date(), 'utf-8')
+        .digest('hex')
 }
 
 const getUTCDate = (date: number | undefined = undefined): Date => {

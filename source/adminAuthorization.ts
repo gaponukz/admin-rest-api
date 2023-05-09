@@ -40,6 +40,8 @@ class QueryAuthenticationHandler extends IRequestHandler {
 }
 
 export default function checkAdminAuthentication(request: Request): Boolean {
-    const checker: IHandler = new BearerAuthenticationHandler(new QueryAuthenticationHandler())
+    let checker = new QueryAuthenticationHandler()
+    checker = new BearerAuthenticationHandler(checker)
+
     return checker.handleRequest(request)
 }

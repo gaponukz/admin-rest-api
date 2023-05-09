@@ -4,7 +4,7 @@ import { container } from './source/dependencies'
 import mongoose from 'mongoose'
 
 import checkAdminAuthentication from './source/adminAuthorization'
-import { getAllUsers } from './source/logic/service'
+import { getAllUsers, registerClientAction } from './source/logic/service'
 
 const settings = container.get<ISettings>("ISettings")
 const app: Express = express()
@@ -32,6 +32,10 @@ app.get('/get_all', async (request: Request, response: Response) => {
         response.status(401)
         response.json([])
     }
+})
+
+app.get('/get_user', async (request: Request, response: Response) => {
+    response.json(await registerClientAction(request))
 })
 
 app.listen(port, () => {

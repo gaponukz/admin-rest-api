@@ -7,7 +7,7 @@ import { UserEntity, PostEntity, MessageEntity } from './enteties'
 import { sendTelegramMessage } from '../utils'
 
 interface IRepository<Entity> {
-    getBy(key: string, fields: any): Promise<Entity>
+    getBy(fields: any): Promise<Entity>
     getAll(): Promise<Entity[]>
     create(user: Entity): Promise<Entity>
     update(user: Entity, fields: any): Promise<Entity>
