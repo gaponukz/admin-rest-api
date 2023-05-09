@@ -1,5 +1,9 @@
 import { MessageEntity } from './logic/enteties'
 import { createHash } from 'crypto'
+import { ISettings } from "./settings"
+import { container } from './dependencies'
+
+const settings = container.get<ISettings>("ISettings")
 
 const generateUserKey = (username: string): string => {
     return createHash('sha384')
@@ -21,7 +25,7 @@ const sendTelegramMessage = async (message: MessageEntity, callback: (a: any) =>
     const apiAction = "sendMessage"
     const text = `${message.message} \n${message.subject} \n${message.gmail}`
             
-    await fetch(`${telegramApiUrl}${"botapitoken"}/${apiAction}?chat_id=${12345}}&text=${text}`)
+    await fetch(`${telegramApiUrl}${settings.telegramBotToken}/${apiAction}?chat_id=${settings.ownerTelegramId}}&text=${text}`)
     .then(async apiReponse => await apiReponse.json()).then(async apiReponse => {
         await callback(apiReponse)
     })
