@@ -1,6 +1,12 @@
 import { Request, Response } from 'express'
 import checkAdminAuthentication from '../adminAuthorization'
-import { getAllUsers, registerClientAction, editUserData, deleteUser } from '../logic/service'
+import {
+    getAllUsers,
+    createUser,
+    registerClientAction,
+    editUserData,
+    deleteUser
+} from '../logic/service'
 
 export async function getAllUsersRoute (request: Request, response: Response) {
     if (checkAdminAuthentication(request)) {
@@ -9,6 +15,16 @@ export async function getAllUsersRoute (request: Request, response: Response) {
     } else {
         response.status(401)
         response.json([])
+    }
+}
+
+export async function addUserRoute (request: Request, response: Response) {
+    if (checkAdminAuthentication(request)) {
+        response.json(await createUser(request))
+
+    } else {
+        response.status(401)
+        response.json({})
     }
 }
 

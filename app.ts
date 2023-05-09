@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from 'express'
 import { ISettings } from "./source/settings"
 import { container } from './source/dependencies'
 import * as userRoutes from './source/poutes/users'
+import * as postRoutes from './source/poutes/posts'
 
 const settings = container.get<ISettings>("ISettings")
 const app: Express = express()
@@ -21,6 +22,10 @@ app.get('/get_all', userRoutes.getAllUsersRoute)
 app.get('/get_user', userRoutes.registerClientActionRoute)
 app.get('/edit_user', userRoutes.editUserDataRoute)
 app.get('/remove_user', userRoutes.removeUserRoute)
+
+app.get('/get_posts', postRoutes.getAllPostsRoute)
+app.get('/add_post', postRoutes.addPostRoute)
+app.get('/remove_post', postRoutes.addPostRoute)
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`)

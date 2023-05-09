@@ -1,6 +1,7 @@
 import { getUTCDate } from '../utils'
 
 class UserEntity {
+    _id: number | undefined
     username: string
     key: string
     startPeriodDate: Date
@@ -14,12 +15,14 @@ class UserEntity {
         username: string,
         key: string,
         isKeyActive: boolean,
-        hasTrial: boolean, 
+        hasTrial: boolean,
+        _id: number | undefined = undefined,
         impersonates: string | undefined = undefined,
         uuid: string | undefined = undefined,
         startPeriodDate: Date | undefined = undefined,
         endPeriodDate: Date | undefined = undefined,
     ) {
+        this._id = _id
         this.username = username
         this.key = key
         this.isKeyActive = isKeyActive
@@ -33,6 +36,7 @@ class UserEntity {
 
     static fromObject(userObject: any): UserEntity {
         return new UserEntity(
+            userObject._id,
             userObject.username,
             userObject.key,
             userObject.isKeyActive,
@@ -46,6 +50,7 @@ class UserEntity {
 }
 
 class PostEntity {
+    _id: number | undefined
     title: string
     description: string
     image: string
@@ -54,7 +59,9 @@ class PostEntity {
         title: string,
         description: string,
         image: string,
+        _id: number | undefined = undefined,
     ) {
+        this._id = _id
         this.title = title
         this.description = description
         this.image = image
@@ -62,6 +69,7 @@ class PostEntity {
 
     static fromObject(postObject: any): PostEntity {
         return new PostEntity(
+            postObject._id,
             postObject.title,
             postObject.description,
             postObject.image
@@ -70,6 +78,7 @@ class PostEntity {
 }
 
 class MessageEntity {
+    _id: number | undefined
     subject: string
     gmail: string
     message: string
@@ -79,8 +88,10 @@ class MessageEntity {
         subject: string,
         gmail: string,
         message: string,
-        date: Date
+        date: Date,
+        _id: number | undefined = undefined,
     ) {
+        this._id = _id
         this.subject = subject
         this.gmail = gmail
         this.message = message
@@ -89,6 +100,7 @@ class MessageEntity {
 
     static fromObject(messageObject: any): MessageEntity {
         return new MessageEntity(
+            messageObject._id,
             messageObject.subject,
             messageObject.gmail,
             messageObject.message,

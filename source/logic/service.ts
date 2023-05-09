@@ -5,6 +5,7 @@ import { generateUserKey, getUTCDate, afterHours } from '../utils'
 import { UserEntity, PostEntity, MessageEntity } from './enteties'
 
 const userDB = container.get<IRepository<UserEntity>>("IRepository<UserEntity>")
+const postsDB = container.get<IRepository<PostEntity>>("IRepository<PostEntity>")
 
 export async function getAllUsers(): Promise<UserEntity[]> {
     return await userDB.getAll()
@@ -44,7 +45,8 @@ export async function registerClientAction(request: Request): Promise<UserEntity
     return user
 }
 
-export async function createUser(user: UserEntity): Promise<UserEntity> {
+export async function createUser(request: Request): Promise<UserEntity> {
+    const user = UserEntity.fromObject(request)
     user.key = generateUserKey(user.username || '')
     return await userDB.create(user)
 }
@@ -60,4 +62,17 @@ export async function editUserData(request: Request): Promise<UserEntity> {
 
 export async function deleteUser(request: Request): Promise<void> {
     await userDB.delete(await userDB.getBy( { key: request.query.key } ))
+}
+
+export async function getAllPosts(): Promise<PostEntity[]> {
+    return await postsDB.getAll()
+}
+
+export async function addPost(request: Request): Promise<PostEntity> {
+    const post = PostEntity.fromObject(request)
+    return await postsDB.create(post)
+}
+
+export async function deletePost(request: Request): Promise<void> {
+    await postsDB.delete(await postsDB.getBy( { _id: request.query.id } ))
 }
