@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import checkAdminAuthentication from '../adminAuthorization'
+import { checkAdminAuthentication } from '../adminAuthorization'
 import {
     getAllUsers,
     createUser,
@@ -7,9 +7,13 @@ import {
     editUserData,
     deleteUser
 } from '../logic/service'
+import { container } from '../dependencies'
+import { ISettings } from "../settings"
+
+const settings = container.get<ISettings>("ISettings")
 
 export async function getAllUsersRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         response.json(await getAllUsers())
 
     } else {
@@ -19,7 +23,7 @@ export async function getAllUsersRoute (request: Request, response: Response) {
 }
 
 export async function addUserRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         response.json(await createUser(request))
 
     } else {
@@ -33,7 +37,7 @@ export async function registerClientActionRoute (request: Request, response: Res
 }
 
 export async function editUserDataRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         response.json(await editUserData(request))
 
     } else {
@@ -43,7 +47,7 @@ export async function editUserDataRoute (request: Request, response: Response) {
 }
 
 export async function removeUserRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         await deleteUser(request).then(() => {
             response.json({ deletedCount: 1 })
 

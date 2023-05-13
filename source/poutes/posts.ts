@@ -1,13 +1,17 @@
 import { Request, Response } from 'express'
-import checkAdminAuthentication from '../adminAuthorization'
+import { checkAdminAuthentication } from '../adminAuthorization'
 import { getAllPosts, addPost, deletePost } from '../logic/service'
+import { container } from '../dependencies'
+import { ISettings } from "../settings"
+
+const settings = container.get<ISettings>("ISettings")
 
 export async function getAllPostsRoute (request: Request, response: Response) {
     response.json(await getAllPosts())
 }
 
 export async function addPostRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         response.json(await addPost(request))
 
     } else {
@@ -18,7 +22,7 @@ export async function addPostRoute (request: Request, response: Response) {
 
 
 export async function removePostRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         await deletePost(request).then(() => {
             response.json({ deletedCount: 1 })
 

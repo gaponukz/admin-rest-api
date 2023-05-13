@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
-import checkAdminAuthentication from '../adminAuthorization'
+import { checkAdminAuthentication } from '../adminAuthorization'
 import { getAllMessages, addMessage, deleteMessage } from '../logic/service'
 
+import { container } from '../dependencies'
+import { ISettings } from "../settings"
+
+const settings = container.get<ISettings>("ISettings")
+
 export async function getAllMessagesRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         response.json(await getAllMessages())
 
     } else {
@@ -17,7 +22,7 @@ export async function sendMessageRoute (request: Request, response: Response) {
 }
 
 export async function deleteMessageRoute (request: Request, response: Response) {
-    if (checkAdminAuthentication(request)) {
+    if (checkAdminAuthentication(request, settings.adminApiKey)) {
         await deleteMessage(request).then(() => {
             response.json({ deletedCount: 1 })
 

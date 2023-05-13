@@ -1,47 +1,43 @@
 import { Request } from 'express'
-import { container } from './dependencies'
-import { ISettings } from "./settings"
-
-const settings = container.get<ISettings>("ISettings")
 
 interface IHandler {
-    handleRequest(request: Request): Boolean
+    handleRequest(request: Request, password: string): Boolean
 }
 
-abstract class IRequestHandler implements IHandler {
+export abstract class IRequestHandler implements IHandler {
     constructor(protected successor: IHandler | undefined = undefined) {
         this.successor = successor
     }
-    abstract handleRequest(request: Request): Boolean
+    abstract handleRequest(request: Request, password: string): Boolean
 }
 
-class BearerAuthenticationHandler extends IRequestHandler {
-    handleRequest(request: Request): Boolean {
+export class BearerAuthenticationHandler extends IRequestHandler {
+    handleRequest(request: Request, password: string): Boolean {
         if (request.headers.authorization.startsWith('Bearer ')) 
-            return request.headers.authorization.includes(settings.adminApiKey)
+            return request.headers.authorization.includes(password)
         
         if (this.successor) 
-            return this.successor.handleRequest(request)
+            return this.successor.handleRequest(request, password)
         
         return false
     }
 }
 
-class QueryAuthenticationHandler extends IRequestHandler {
-    handleRequest(request: Request): Boolean {
+export class QueryAuthenticationHandler extends IRequestHandler {
+    handleRequest(request: Request, password: string): Boolean {
         if (request.query.adminApiKey ) 
-            return request.query.adminApiKey == settings.adminApiKey
+            return request.query.adminApiKey == password
         
         if (this.successor)
-            return this.successor.handleRequest(request)
+            return this.successor.handleRequest(request, password)
         
         return false
     }
 }
 
-export default function checkAdminAuthentication(request: Request): Boolean {
+export function checkAdminAuthentication(request: Request, password: string): Boolean {
     let checker = new QueryAuthenticationHandler()
     checker = new BearerAuthenticationHandler(checker)
 
-    return checker.handleRequest(request)
+    return checker.handleRequest(request, password)
 }
