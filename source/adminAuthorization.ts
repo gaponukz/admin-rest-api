@@ -1,11 +1,7 @@
 import { Request } from 'express'
 
-interface IHandler {
-    handleRequest(request: Request, password: string): Boolean
-}
-
-export abstract class IRequestHandler implements IHandler {
-    constructor(protected successor: IHandler | undefined = undefined) {
+export abstract class IRequestHandler {
+    constructor(protected successor: IRequestHandler | undefined = undefined) {
         this.successor = successor
     }
     abstract handleRequest(request: Request, password: string): Boolean
