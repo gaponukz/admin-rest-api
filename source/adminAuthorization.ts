@@ -9,8 +9,10 @@ export abstract class IRequestHandler {
 
 export class BearerAuthenticationHandler extends IRequestHandler {
     handleRequest(request: Request, password: string): Boolean {
-        if (request.headers.authorization.startsWith('Bearer ')) 
-            return request.headers.authorization.includes(password)
+        if (request.headers.authorization) {
+            if (request.headers.authorization.startsWith('Bearer ')) 
+                return request.headers.authorization.includes(password)
+        }
         
         if (this.successor) 
             return this.successor.handleRequest(request, password)
