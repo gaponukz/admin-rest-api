@@ -3,6 +3,7 @@ import { container } from '../dependencies'
 import { IRepository, SendTelegramMessageDecorator } from './repositories'
 import { generateUserKey, getUTCDate, afterHours } from '../utils'
 import { UserEntity, PostEntity, MessageEntity } from './enteties'
+import { QueryUserParser, PostBodyUserParser, ParserResult } from '../requestUserParsers'
 
 const userDB = container.get<IRepository<UserEntity>>("IRepository<UserEntity>")
 const postsDB = container.get<IRepository<PostEntity>>("IRepository<PostEntity>")
@@ -14,8 +15,11 @@ export async function getAllUsers(): Promise<UserEntity[]> {
     return await userDB.getAll()
 }
 
-async function getUserFromRequest(request: Request): Promise<UserEntity> {
-    return await userDB.getBy({ key: request.query.key })
+async function getUserFromRequest(request: Request): Promise<ParserResult> {
+    let parser = new PostBodyUserParser()
+    parser = new QueryUserParser(parser)
+
+    return await parser.getUserAndUuidFromRequest(request, userDB)
 }
 
 async function getSameUuidUsers(uuid: string): Promise<UserEntity[]> {
@@ -23,7 +27,7 @@ async function getSameUuidUsers(uuid: string): Promise<UserEntity[]> {
 }
 
 export async function registerClientAction(request: Request): Promise<UserEntity> {
-    const user = await getUserFromRequest(request)
+    const { user, uuid } = await getUserFromRequest(request)
 
     if (user.isKeyActive) {
         let howMuchLeft = user.endPeriodDate.getTime() - user.startPeriodDate.getTime()
@@ -39,7 +43,7 @@ export async function registerClientAction(request: Request): Promise<UserEntity
             startPeriodDate: user.startPeriodDate,
             endPeriodDate: user.endPeriodDate,
             isKeyActive: true,
-            uuid: request.query.uuid,
+            uuid: uuid,
             impersonates: sameUuidUsers[0]
         })
 
