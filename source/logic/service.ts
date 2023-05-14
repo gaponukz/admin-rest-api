@@ -15,7 +15,7 @@ export async function getAllUsers(): Promise<UserEntity[]> {
     return await userDB.getAll()
 }
 
-async function getUserFromRequest(request: Request): Promise<ParserResult> {
+async function getUserFromRequest(request: Request): Promise<ParserResult | undefined> {
     let parser = new PostBodyUserParser()
     parser = new QueryUserParser(parser)
 
@@ -26,8 +26,11 @@ async function getSameUuidUsers(uuid: string): Promise<UserEntity[]> {
     return (await userDB.getAll()).filter(user => uuid && user.uuid == uuid)
 }
 
-export async function registerClientAction(request: Request): Promise<UserEntity> {
-    const { user, uuid } = await getUserFromRequest(request)
+export async function registerClientAction(request: Request): Promise<UserEntity | undefined> {
+    const result = await getUserFromRequest(request)
+    if (!result) return
+
+    const { user, uuid } = result
 
     if (user.isKeyActive) {
         let howMuchLeft = user.endPeriodDate.getTime() - user.startPeriodDate.getTime()

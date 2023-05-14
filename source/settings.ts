@@ -22,10 +22,10 @@ class DotEnvSettings implements ISettings {
         dotenv.config()
 
         this.port = 8000
-        this.databaseUri = process.env.databaseUri
-        this.adminApiKey = process.env.adminApiKey
-        this.ownerTelegramId = parseInt(process.env.ownerTelegramId)
-        this.telegramBotToken = process.env.telegramBotToken
+        this.databaseUri = process.env.databaseUri as string
+        this.adminApiKey = process.env.adminApiKey as string
+        this.ownerTelegramId = parseInt(process.env.ownerTelegramId as any)
+        this.telegramBotToken = process.env.telegramBotToken as string
     }
 }
 

@@ -27,6 +27,8 @@ class TestUserRepository implements IRepository<UserEntity> {
                 hasTrial: true
             })
         }
+
+        return undefined as any
     }
 }
 
