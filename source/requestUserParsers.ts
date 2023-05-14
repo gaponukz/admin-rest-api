@@ -40,20 +40,20 @@ abstract class RequestUserParserTemplate extends IRequestUserParser {
 
 export class QueryUserParser extends RequestUserParserTemplate {
     getUserKeyFromRequest(request: Request): string {
-        return request.query.key as string
+        return request?.query?.key as string
     }
 
     getUserUuidFromRequest(request: Request): string {
-        return request.query.uuid as string
+        return request?.query?.uuid as string
     }
 }
 
 export class PostBodyUserParser extends RequestUserParserTemplate {
     getUserKeyFromRequest(request: Request): string {
-        return request.body.key
+        return request?.body?.key
     }
 
     getUserUuidFromRequest(request: Request): string {
-        return request.body.uuid
+        return request?.body?.uuid
     }
 }
