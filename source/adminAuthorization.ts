@@ -7,12 +7,14 @@ export abstract class IRequestHandler {
     abstract handleRequest(request: Request, password: string): Boolean
 }
 
-export class BearerAuthenticationHandler extends IRequestHandler {
+abstract class RequestHandlerTemplate extends IRequestHandler {
+    abstract getPasswordFromRequest(request: Request): string | undefined
+
     handleRequest(request: Request, password: string): Boolean {
-        if (request.headers.authorization) {
-            if (request.headers.authorization.startsWith('Bearer ')) 
-                return request.headers.authorization.includes(password)
-        }
+        const passwordFromRequest = this.getPasswordFromRequest(request)
+
+        if (passwordFromRequest == password) 
+            return true
         
         if (this.successor) 
             return this.successor.handleRequest(request, password)
@@ -21,15 +23,17 @@ export class BearerAuthenticationHandler extends IRequestHandler {
     }
 }
 
-export class QueryAuthenticationHandler extends IRequestHandler {
-    handleRequest(request: Request, password: string): Boolean {
-        if (request.query.adminApiKey ) 
-            return request.query.adminApiKey == password
-        
-        if (this.successor)
-            return this.successor.handleRequest(request, password)
-        
-        return false
+export class BearerAuthenticationHandler extends RequestHandlerTemplate {
+    getPasswordFromRequest(request: Request): string | undefined {
+        if (request.headers.authorization?.startsWith('Bearer ')) {
+            return request.headers.authorization.replace('Bearer ', '')
+        }
+    }
+}
+
+export class QueryAuthenticationHandler extends RequestHandlerTemplate {
+    getPasswordFromRequest(request: Request): string | undefined {
+        return request.query.adminApiKey as string | undefined
     }
 }
 
